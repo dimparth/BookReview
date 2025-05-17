@@ -19,6 +19,15 @@ public sealed class ReviewRepository : BaseRepository<Review, long>, IReviewRepo
             .ToListAsync();
     }
 
+    public async Task<Review?> GetReviewWithVotesByIdAsync(long reviewId)
+    {
+        return await _dbSet
+    .Include(r => r.Votes)
+    .Include(r => r.User)
+    .Include(r => r.Book)
+    .FirstOrDefaultAsync(r => r.Id == reviewId);
+    }
+
     public async Task<bool> VoteAsync(long reviewId, long userId, bool isUpvote)
     {
         var review = await _dbSet

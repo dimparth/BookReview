@@ -1,0 +1,68 @@
+﻿@model BookListViewModel
+
+@{
+    ViewData["Title"] = "Books";
+}
+
+<h2>Books</h2>
+
+<form asp-action="Index" method="get" class="mb-4">
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label>Genre</label>
+            <input asp-for="Filter.Genre" class="form-control" placeholder="e.g. Programming" />
+        </div>
+        <div class="form-group col-md-2">
+            <label>Year</label>
+            <input asp-for="Filter.Year" class="form-control" type="number" />
+        </div>
+        <div class="form-group col-md-2">
+            <label>Min Rating</label>
+            <input asp-for="Filter.MinRating" class="form-control" type="number" min="1" max="5" step="0.1" />
+        </div>
+        <div class="form-group col-md-2">
+            <label>Max Rating</label>
+            <input asp-for="Filter.MaxRating" class="form-control" type="number" min="1" max="5" step="0.1" />
+        </div>
+        <div class="form-group col-md-2 align-self-end">
+            <button type="submit" class="btn btn-primary w-100">Filter</button>
+        </div>
+    </div>
+</form>
+
+@if (User.Identity?.IsAuthenticated ?? false)
+{
+    <a asp-action="Create" class="btn btn-success mb-3">Add New Book</a>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Year</th>
+            <th>Avg. Rating</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model.Books)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Genre</td>
+                <td>@book.PublishedYear</td>
+                <td>@(book.AverageRating != 0 ? book.AverageRating.ToString("0.0") : "N/A")</td>
+                <td>
+                    <a asp-action="Reviews" asp-route-id="@book.Id" class="btn btn-sm btn-info">Reviews</a>
+                    @if (User.Identity?.IsAuthenticated ?? false)
+                    {
+                        <a asp-action="Edit" asp-route-id="@book.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

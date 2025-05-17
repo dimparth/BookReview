@@ -4,10 +4,10 @@ public sealed class Book
 {
     public long Id { get; private set; }
 
-    public string Title { get; private set; }
-    public string Author { get; private set; }
-    public int PublishedYear { get; private set; }
-    public string Genre { get; private set; }
+    public string Title { get; set; }
+    public string Author { get; set; }
+    public int PublishedYear { get; set; }
+    public string Genre { get; set; }
 
     private readonly List<Review> _reviews = [];
     public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
@@ -30,8 +30,10 @@ public sealed class Book
         };
     }
 
-    public void AddReview(Review review)
+    public Review AddReview(string content, int rating, User user)
     {
+        var review = Review.Create(content, rating, user, this);
         _reviews.Add(review);
+        return review;
     }
 }
