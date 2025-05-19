@@ -82,12 +82,12 @@ public class BookController : Controller
                 NewReview = model.NewReview
             };
 
-            return View("Reviews", vm);
+            return View("Reviews", vm.BookId);
         }
         if (model.NewReview is null)
         {
             ModelState.AddModelError(string.Empty, "New review is required.");
-            return View("Reviews", model);
+            return View("Reviews", model.BookId);
         }
         var userId = User.GetUserId();
         var reviewDomain = Review.Create(model.NewReview.Content, model.NewReview.Rating, userId, model.NewReview.BookId);
@@ -106,7 +106,7 @@ public class BookController : Controller
                 NewReview = model.NewReview
             };
 
-            return View("Reviews", vm);
+            return View("Reviews", vm.BookId);
         }
 
         return RedirectToAction("Reviews", new { id = result.BookId });

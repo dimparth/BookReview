@@ -37,6 +37,9 @@ public sealed class BookRepository : BaseRepository<Book, long>, IBookRepository
             query = query.Where(b => b.Reviews.Any()
                 && b.Reviews.Average(r => r.Rating) <= filter.MaxAverageRating.Value);
 
+        if (!string.IsNullOrWhiteSpace(filter.Genre))
+            query = query.Where(b => b.Genre.Contains(filter.Genre));
+
         if (!string.IsNullOrWhiteSpace(filter.SortBy))
         {
             query = filter.SortBy.ToLower() switch

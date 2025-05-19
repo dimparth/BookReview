@@ -1,8 +1,16 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Welcome to BookReview!";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">BookReview</h1>
+    <p class="lead">Your place to discover books and share reviews.</p>
+
+    <hr />
+
+    <p>
+        Browse our collection of books and contribute your thoughts by leaving reviews.
+    </p>
+
+    <a class="btn btn-primary btn-lg mt-3" asp-controller="Book" asp-action="Index">Browse Books</a>
 </div>
