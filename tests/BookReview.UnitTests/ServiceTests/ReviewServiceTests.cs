@@ -49,58 +49,73 @@ public sealed class ReviewServiceTests : IClassFixture<ContainerFixture>
     [Fact]
     public async Task GetAllAsync_ShouldReturnAll()
     {
+        //Arrange
         var list = new List<Review> { Review.Create("Nice", 5, 1, 1) };
         _reviewRepository.GetAllAsync().Returns(list);
 
+        //Act
         var result = await _service.GetAllAsync();
 
+        //Assert
         Assert.Equal(list, result);
     }
 
     [Fact]
     public async Task GetByIdAsync_ShouldReturnCorrectReview()
     {
+        //Arrange
         var review = Review.Create("Nice", 5, 1, 1);
         _reviewRepository.GetReviewWithVotesByIdAsync(1).Returns(review);
 
+        //Act
         var result = await _service.GetByIdAsync(1);
 
+        //Assert
         Assert.Equal(review, result);
     }
 
     [Fact]
     public async Task RemoveAsync_ShouldDeleteReview()
     {
+        //Arrange
         var review = Review.Create("Nice", 5, 1, 1);
         _reviewRepository.DeleteAsync(review).Returns(true);
 
+        //Act
         var result = await _service.RemoveAsync(review);
 
+        //Assert
         Assert.True(result);
     }
 
     [Fact]
     public async Task UpdateAsync_ShouldUpdateReview()
     {
+        //Arrange
         var review = Review.Create("Nice", 5, 1, 1);
         _reviewRepository.UpdateAsync(review).Returns(review);
 
+        //Act
         var result = await _service.UpdateAsync(review);
 
+        //Assert
         Assert.Equal(review, result);
     }
 
     [Fact]
     public async Task VoteAsync_ShouldToggleVoteIfDifferent()
     {
+        //Arrange
         var review = Review.Create("Nice", 5, 1, 1);
         var vote = ReviewVote.Create(1, review.Id, true);
         review.AddVote(vote);
 
         _reviewRepository.GetReviewWithVotesByIdAsync(review.Id).Returns(review);
 
+        //Act
         var result = await _service.VoteAsync(review.Id, 1, false);
 
+        //Assert
         Assert.True(result);
         Assert.False(vote.IsUpvote);
     }
@@ -108,11 +123,14 @@ public sealed class ReviewServiceTests : IClassFixture<ContainerFixture>
     [Fact]
     public async Task VoteAsync_ShouldAddVoteIfNotExists()
     {
+        // Arrange
         var review = Review.Create("Nice", 5, 1, 1);
         _reviewRepository.GetReviewWithVotesByIdAsync(review.Id).Returns(review);
 
+        // Act
         var result = await _service.VoteAsync(review.Id, 1, true);
 
+        // Assert
         Assert.True(result);
         Assert.Single(review.Votes);
         Assert.Equal(1, review.Votes.First().UserId);

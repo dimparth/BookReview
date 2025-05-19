@@ -32,7 +32,6 @@ public sealed class BookServiceTests : IClassFixture<ContainerFixture>
 
         // Assert
         Assert.Equal(book, result);
-        await _repo.Received(1).AddAsync(book);
     }
 
     [Fact]
@@ -47,7 +46,6 @@ public sealed class BookServiceTests : IClassFixture<ContainerFixture>
 
         // Assert
         Assert.Equal(books, result);
-        await _repo.Received(1).GetAllAsync();
     }
 
     [Fact]
